@@ -30,6 +30,34 @@ export const updateCategory = async (req, res, next) => {
   }
 };
 
+export const updateOrderNo = async (req, res, next) => {
+  try {
+    const { idOne, idTwo } = req.body;
+
+    // Find the documents corresponding to the provided IDs
+    const docOne = await Category.findById(idOne);
+    const docTwo = await Category.findById(idTwo);
+
+    // Check if both documents exist
+    if (!docOne || !docTwo) {
+      return res.status(404).json({ success: false, message: 'One or more documents not found' });
+    }
+
+    // Interchange the orderNo values
+    const tempOrderNo = docOne.orderNo;
+    docOne.orderNo = docTwo.orderNo;
+    docTwo.orderNo = tempOrderNo;
+
+    // Save the changes
+    await docOne.save();
+    await docTwo.save();
+
+    res.status(200).json({ success: true, message: 'OrderNo values interchanged successfully' });
+  } catch (error) {
+    next(errorHandler);
+  }
+};
+
 export const deleteCategory = async (req, res, next) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
