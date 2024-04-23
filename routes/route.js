@@ -7,7 +7,7 @@ import { getHeroes, createHero, updateHero, deleteHero } from '../controllers/he
 router.post('/category', createCategory);
 router.get('/category', getCategory);
 router.put('/category/:id', updateCategory);
-router.put('/updateOrderNo', updateOrderNo);
+router.post('/updateOrderNo', updateOrderNo);
 router.delete('/category/:id', deleteCategory);
 
 //hero sliders
