@@ -16,7 +16,7 @@ const db_connect = process.env.DB_CONNECT;
 
 //Routes
 
-app.use("/cms/api", routes);
+app.use("/cms", routes);
 
 // Error handling
 app.use((err, req, res, next) => {
