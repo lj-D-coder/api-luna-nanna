@@ -13,7 +13,7 @@ export const createCategory = async (req, res, next) => {
 
 export const getCategory = async (req, res, next) => {
   try {
-    const category = await Category.find();
+    const category = await Category.find().sort({ orderNo: 1 }); // Sorting by orderNo field in ascending order
     res.status(200).json({ success: true, category });
   } catch (error) {
     next(errorHandler);
