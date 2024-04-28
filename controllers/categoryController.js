@@ -7,6 +7,7 @@ export const createCategory = async (req, res, next) => {
     await category.save();
     res.status(200).json({ success: true, category });
   } catch (error) {
+    console.log(error)
     next(errorHandler);
   }
 };
@@ -20,15 +21,34 @@ export const getCategory = async (req, res, next) => {
   }
 };
 
+
 export const updateCategory = async (req, res, next) => {
   try {
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body);
-    const updatedCategory = await category.save();
-    res.status(200).json({ success: true, updatedCategory });
+    // Get the fields to update from req.body
+    const { ...updateFields } = req.body;
+
+    // Filter out null values from the updateFields
+    const filteredUpdateFields = {};
+    for (const key in updateFields) {
+      if (updateFields[key] !== null) {
+        filteredUpdateFields[key] = updateFields[key];
+      }
+    }
+
+    // Update the category with the filtered fields
+    const category = await Category.findByIdAndUpdate(req.params.id, filteredUpdateFields, { new: true });
+
+    if (!category) {
+      return res.status(404).json({ success: false, message: 'Category not found' });
+    }
+
+    res.status(200).json({ success: true, updatedCategory: category });
   } catch (error) {
+    console.log(error);
     next(errorHandler);
   }
 };
+
 
 export const updateOrderNo = async (req, res, next) => {
   try {
@@ -54,6 +74,7 @@ export const updateOrderNo = async (req, res, next) => {
 
     res.status(200).json({ success: true, message: 'OrderNo values interchanged successfully' });
   } catch (error) {
+    console.log(error)
     next(errorHandler);
   }
 };
