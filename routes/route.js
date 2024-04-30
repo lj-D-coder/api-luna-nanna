@@ -35,7 +35,7 @@ router.delete('/hero-slider/:id', deleteHero);
 //banner
 router.get('/banner', getBanner);
 router.post('/banner', changeBanner);
-route.delete('/banner/:id',deleteBanner);
+router.delete('/banner/:id',deleteBanner);
 
 //services
 router.get("/services", getServices)

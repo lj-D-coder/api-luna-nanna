@@ -90,9 +90,11 @@ export const updateSubCategory = async (req, res, next) => {
 
 export const deleteSubCategory = async (req, res, next) => {
   try {
+    console.log(req);
     const subCategory = await Subcategory.findByIdAndDelete(req.params.id);
     res.status(200).json({ success: true, message: "Data Deleted Successfully" });
   } catch (error) {
+    console.log(error);
     next(errorHandler);
   }
 };
