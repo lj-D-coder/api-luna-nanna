@@ -35,12 +35,11 @@ export const changeBanner = async (req, res) => {
   }
 };
 
-export const deleteHero = async (req, res) => {
-  const { id: _id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("No hero with that id");
-
-  await Hero.findByIdAndRemove(_id);
-
-  res.json({ message: "Hero deleted successfully" });
+export const deleteBanner = async (req, res, next) => {
+  try {
+    const banner = await Banner.findByIdAndDelete(req.params.id);
+    res.status(200).json({ success: true, message: "Data Deleted Successfully" });
+  } catch (error) {
+    next(errorHandler);
+  }
 };
