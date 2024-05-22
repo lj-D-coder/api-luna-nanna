@@ -1,5 +1,6 @@
 import { Category } from "../models/categoryModel.js";
 import { errorHandler } from "../utils/error.js";
+import { Service } from "../models/serviceModel.js";
 
 export const createCategory = async (req, res, next) => {
   try {
@@ -41,6 +42,25 @@ export const updateCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
+
+    const updatedData = {
+      category: category.categoryName,
+      
+    };
+  
+    const update = await Service.updateMany(
+      { categoryId: category._id },
+      {
+        $set: updatedData,
+      },
+      { upsert: true }
+    );
+
+    if (!update) { 
+      return res.status(404).json({ success: false, message: 'error in update' });
+    }
+
+
 
     res.status(200).json({ success: true, updatedCategory: category });
   } catch (error) {

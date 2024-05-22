@@ -1,5 +1,6 @@
 import { Subcategory } from "../models/subCategoryModel.js";
 import { errorHandler } from "../utils/error.js";
+import { Service } from "../models/serviceModel.js";
 
 export const createSubCategory = async (req, res, next) => {
   try {
@@ -79,6 +80,24 @@ export const updateSubCategory = async (req, res, next) => {
 
     if (!subCategory) {
       return res.status(404).json({ success: false, message: 'Sub Category not found' });
+    }
+
+
+    const updatedData = {
+      subCategory: subCategory.subCategoryName,
+      
+    };
+  
+    const update = await Service.updateMany(
+      { subCategoryId: subCategory._id },
+      {
+        $set: updatedData,
+      },
+      { upsert: true }
+    );
+
+    if (!update) { 
+      return res.status(404).json({ success: false, message: 'error in update' });
     }
 
     res.status(200).json({ success: true, updatedSubCategory: subCategory });
